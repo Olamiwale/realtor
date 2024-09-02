@@ -1,17 +1,50 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import image1 from "../assets/image.png";
 import { Link } from "react-router-dom";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import Auth from "../components/Auth";
+import { auth } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [showPass, setShowPass] = useState(true);
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [showPass, setShowPass] = useState(true)
+  const navigate = useNavigate();
 
-  
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+
+    if (!email) {
+      alert("Please enter an email address.");
+      return;
+    }
+
+    if (!password) {
+      alert("Please enter a password.");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      alert("Sign up successful");
+      navigate('/')
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        alert("This email is already registered");
+      } else {
+        alert(`Error: ${error.Message}`);
+      }
+    }
+  };
 
   return (
     <div>
@@ -23,63 +56,55 @@ export default function SignUp() {
         </div>
 
         <div>
-          <form>
+          <form onSubmit={handleSignUp}>
             <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              id="email"
-              placeholder="Email address"
-              className="mb-6 w-full p-2 md:p-4 text-gray-700 border-gray-300 rounded transition ease-in-out"
+              value={name}
+              type="name"
+              id="name"
+              placeholder="Name"
+              className="custom-input"
+              onChange={(e) => setName(e.target.value)}
             />
 
             <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="name"
+              value={email}
+              type="email"
               id="email"
               placeholder="Email address"
-              className="mb-6 w-full p-2 md:p-4 text-gray-700 border-gray-300 rounded transition ease-in-out"
+              className="custom-input"
+              onChange={(e) => setEmail(e.target.value)}
             />
 
             <div className="relative mb-6">
               <input
-              type={showPass ? 'text' : 'password'}
+                type={!showPass ? "text" : "password"}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 placeholder="Password"
-                className="w-full p-2 md:p-4 text-gray-700 border-gray-300 rounded transition ease-in-out"                
+                className="custom-input"
+                onChange={(e) => setPassword(e.target.value)}
               />
-              <div className="absolute top-1/3 right-2" onClick={() => setShowPass(!showPass)}>
-
-              {showPass ? <AiFillEye /> : <AiFillEyeInvisible />} 
-                
+              <div
+                className="absolute top-1/3 right-2"
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? <AiFillEyeInvisible /> : <AiFillEye />}
               </div>
-              
             </div>
 
             <div className="flex justify-center mb-6 text-sm md:text-[12px] items-center ">
-              <p> Don't have a account?
-                <Link to="/sign-up">
-                  <span className="px-2">Register </span>
-                </Link>
+              <p>
+                Don't have a account?
+                <Link to="/sign-up">Register </Link>
               </p>
 
-              <p>
-                <Link to="/forgot-password">
-                <span> Forgot password?</span></Link>
+              <p className="px-2 text-red-700">
+                <Link to="/forgot-password">Forgot password?</Link>
               </p>
             </div>
 
-
-            <button
-              className="w-full bg-blue-600 text-white p-2 md:p-4 font-medium uppercase rounded hover:bg-blue-700"
-              type="submit"
-            >
-              Sign in
-            </button>
-            <div className="flex items-center  p-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300">
+            <button className="blue-btn">Sign up</button>
+            <div className="opt">
               <p className="text-center font-semibold mx-4">OR</p>
             </div>
             <Auth />

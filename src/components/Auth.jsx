@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { auth } from '../firebase';
-import { FcGoogle } from 'react-icons/fc'
+import { auth, db } from '../firebase';
+import { FcGoogle } from 'react-icons/fc';
+import { useNavigate } from 'react-router-dom';
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+
+
 
 
 export default function Auth() {
@@ -10,18 +14,38 @@ export default function Auth() {
  
 
   const googleProvider = new GoogleAuthProvider();
+  const navigate = useNavigate()
 
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      setUser(result.user);
-      alert('Google sign-in successful');
+      const user = result.user;
+      setUser(user)
+      alert('Sign in successful')
+        navigate('/')
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: user.displayName,
+          email: user.email,
+          timestamp: serverTimestamp(),
+        });
+      }
+
+
     } catch (error) {
-      console.error('Error during Google sign-in:', error.message);
-      alert('Google sign-in failed');
+      if (error.code === 'auth/user-not-found') {
+        alert('No account found with this email. Please sign up')
+       } else if (error.code === 'auth/wrong-password'){
+        alert('Incorrect password')
+       } else {
+        alert(`Error: ${error.message}`)
+       }
     }
   };
-  
+   
   return (
     <button onClick={handleGoogleSignIn}
       type="button"

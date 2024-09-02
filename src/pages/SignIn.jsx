@@ -1,15 +1,45 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import image1 from "../assets/image.png";
 import { Link } from "react-router-dom";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import Auth from "../components/Auth";
-
+ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(true);
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPass, setShowPass] = useState(true)
+  const navigate = useNavigate();
+
+
+
+ const auth = getAuth();
+
+  const handleSignIn = async (event) => {
+    event.preventDefault();
+
+  
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      alert('Sign in successful');
+      navigate('/')
+
+    } catch (error) {
+     if (error.code === 'auth/user-not-found') {
+      alert('No account found with this email. Please sign up')
+     } else if (error.code === 'auth/wrong-password'){
+      alert('Incorrect password')
+     } else {
+      alert(`Error: ${error.message}`)
+     }
+    }
+  };
+
+
+
 
   return (
     <div>
@@ -21,33 +51,30 @@ export default function SignIn() {
         </div>
 
         <div>
-          <form>
+          <form onSubmit={handleSignIn}>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               id="email"
               placeholder="Email address"
-              className="mb-6 w-full p-4 text-gray-700 border-gray-300 rounded transition ease-in-out"
+              className="custom-input"
             />
             <div className="relative mb-6">
               <input
-              type={showPass ? 'text' : 'password'}
+                type={showPass ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 placeholder="Password"
-                className="w-full p-4 text-gray-700 border-gray-300 rounded transition ease-in-out"
-
-                
+                className="custom-input"
               />
-              <div className="absolute top-1/3 right-2" onClick={() => setShowPass(!showPass)}>
-
-              {showPass ? <AiFillEye /> : <AiFillEyeInvisible />}
-                
-                
+              <div
+                className="absolute top-1/3 right-2"
+                onClick={() => setShowPass(!showPass)}
+              >
+                {!showPass ? <AiFillEye /> : <AiFillEyeInvisible />}
               </div>
-              
             </div>
 
             <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg">
@@ -55,8 +82,7 @@ export default function SignIn() {
                 Don't have a account?
                 <Link
                   to="/sign-up"
-                  className="text-red-600 hover:text-red-700 ml-1"
-                >
+                  className="text-red-600 hover:text-red-700 ml-1" >
                   Register
                 </Link>
               </p>
@@ -64,19 +90,17 @@ export default function SignIn() {
               <p>
                 <Link
                   to="/forgot-password"
-                  className="text-blue-600 hover:text-blue-800 px-2"
-                >
+                  className="text-blue-600 hover:text-blue-800 px-2">
                   Forgot password?
                 </Link>
               </p>
             </div>
             <button
-              className="w-full bg-blue-600 text-white font-medium uppercase rounded hover:bg-blue-700 p-2 md:p-4"
-              type="submit"
-            >
+              className="blue-btn"
+              type="submit" >
               Sign in
             </button>
-            <div className="flex items-center  my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300">
+            <div className="opt">
               <p className="text-center font-semibold mx-4">OR</p>
             </div>
             <Auth />
