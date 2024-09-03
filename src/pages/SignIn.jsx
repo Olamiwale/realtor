@@ -23,7 +23,6 @@ export default function SignIn() {
   
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
       alert('Sign in successful');
       navigate('/')
 
@@ -34,6 +33,9 @@ export default function SignIn() {
       alert('Incorrect password')
      } else {
       alert(`Error: ${error.message}`)
+     }
+     if (error.message.includes('offline')){
+        alert('You are offline')
      }
     }
   };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
@@ -42,16 +42,11 @@ export default function Profile() {
               className="custom-input"
             />
 
-            <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mb-6">
-              <p className="flex items-center">
-                Do you want to change your name?
-                <span className="text-red-600 hover:text-red-700 ml-1 cursor-pointer">
-                  Edit
-                </span>
-              </p>
+            <div className="flex justify-center mb-6">
+              
               <p
                 onClick={logOut}
-                className="text-blue-600 hover:text-blue-800 cursor-pointer"
+                className="text-red-600 uppercase font-bold cursor-pointer"
               >
                 Sign out
               </p>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth, db } from '../firebase';
 import { FcGoogle } from 'react-icons/fc';
@@ -10,7 +10,7 @@ import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 
 export default function Auth() {
 
-  const [user, setUser] = useState(null);
+
  
 
   const googleProvider = new GoogleAuthProvider();
@@ -20,9 +20,10 @@ export default function Auth() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      setUser(user)
+    
       alert('Sign in successful')
         navigate('/')
+
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
 

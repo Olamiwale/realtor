@@ -1,8 +1,12 @@
-import React from "react";
+import {useState, useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import realtor from "../assets/th.jpeg";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function Header() {
+
+const [pageState, setPageState] = useState('Sign In')
+
   const location = useLocation();
   const navigate = useNavigate();
   function pathMatchRoute(route) {
@@ -10,6 +14,22 @@ export default function Header() {
       return true;
     }
   }
+
+  const auth = getAuth()
+
+  useEffect(() => {
+   onAuthStateChanged(auth, (user) => {
+    if (user){
+      setPageState('Profile')
+    } else{
+      setPageState('Sign In')
+    }
+   })
+ 
+  }, [auth])
+  
+
+
 
   return (
     <div className="border-b shadow-sm sticky top-0 z-50">
@@ -49,7 +69,7 @@ export default function Header() {
               }`}
               onClick={() => navigate("/profile")}
             >
-              Profile
+             {pageState}
             </li>
           </ul>
         </div>
