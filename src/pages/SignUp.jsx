@@ -51,8 +51,8 @@ export default function SignUp() {
       <h1 className="text-3xl text-center mt-6 font-bold uppercase">Sign up</h1>
 
       <div className="flex justify-center gap-10 flex-wrap items-center p-12 max-w-6xl mx-auto">
-        <div className="">
-          <img src={image1} alt="key" className="w-full rounded-2xl" />
+      <div className="flex justify-center">
+          <img src={image1} alt="key" className="w-[380px] h-[300px] rounded-2xl" />
         </div>
 
         <div>

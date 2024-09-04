@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { FcHome } from "react-icons/fc";
 
 export default function Profile() {
   const auth = getAuth();
@@ -52,13 +53,16 @@ export default function Profile() {
               </p>
             </div>
           </form>
-          <button type="submit" className="blue-btn">
-            <Link
-              to="/create-listing"
-              className="flex justify-center items-center"
-            >
+          <button 
+          type="submit" 
+          className="flex justify-center items-center space-x-5 blue-btn">
+            <FcHome size={15} />
+            <Link to="/create-listing"
+              className="flex justify-center items-center">
               Sell or rent your home
+             
             </Link>
+             
           </button>
         </div>
       </section>

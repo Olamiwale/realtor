@@ -32,7 +32,7 @@ const [pageState, setPageState] = useState('Sign In')
 
 
   return (
-    <div className="border-b shadow-sm sticky top-0 z-50">
+    <div className="border-b shadow-sm sticky bg-white top-0 z-50">
       <header className="flex justify-between items-center px-3 max-w-6xl mx-auto">
         <div>
           <img
