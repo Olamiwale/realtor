@@ -53,15 +53,24 @@ const [pageState, setPageState] = useState('Sign In')
             >
               Home
             </li>
+
             <li
               className={`cursor-pointer py-3 text-sm font-semibold ${
-                pathMatchRoute("/offers") &&
-                "text-gray-400 border-b-[3px] border-b-red-500"
-              }`}
-              onClick={() => navigate("/offers")}
-            >
-              Offers
+                pathMatchRoute("/offers") && "text-gray-400 border-b-[3px] border-b-red-500"
+              }`}onClick={() => navigate("/offers")}>Offers
             </li>
+            
+            <li
+              className={`cursor-pointer py-3 text-sm font-semibold ${
+                pathMatchRoute("/rent") && "text-gray-400 border-b-[3px] border-b-red-500"
+              }`}onClick={() => navigate("/rent")}>Rent
+            </li>
+            <li
+              className={`cursor-pointer py-3 text-sm font-semibold ${
+                pathMatchRoute("/sell") && "text-gray-400 border-b-[3px] border-b-red-500"
+              }`}onClick={() => navigate("/sell")}>Sell
+            </li>
+
             <li
               className={`cursor-pointer py-3 text-sm font-semibold ${
                 (pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) &&

@@ -1,9 +1,12 @@
 import React from 'react'
 import { imageGallery } from '../assets/data'
 
-export default function Offers() {
+export default function Sell() {
   return (
     <div>
+        <div className='flex justify-center py-10'>
+            <p className='text-2xl uppercase font-bold'> The Properties here has been listed for sell</p>
+            </div>
        <div className='flex flex-wrap p-2 gap-2 justify-center'>
       {imageGallery.map((item, index) => (
         <div key={index}>
